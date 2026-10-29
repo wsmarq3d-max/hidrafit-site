@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HidraFit · Toda bebida conta</title>
+<meta name="description" content="O HidraFit soma tudo o que você bebe, te lembra na hora certa e não cobra pelo básico. Grátis, sem anúncios, para iPhone e Android.">
+<meta property="og:title" content="HidraFit · Toda bebida conta">
+<meta property="og:description" content="Café, chá, suco, água de coco: tudo conta. Lembrete que te entende, sem anúncios.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Values from replica/design/tokens.json (light) and tokens.dark.json (dark). */
+  :root{
+    --bg:#faf6ea; --surface:#f3ebc8; --border:#e4d9b4; --border-input:#7a7258;
+    --text:#1f2a44; --text-muted:#4c5570;
+    --accent:#f07eaa; --on-accent:#1f2a44; --accent-text:#a8325f;
+    --accent-soft:#fbe0ea; --on-accent-soft:#7a2047;
+    --hero:#1f2a44; --on-hero:#f3ebc8; --hero-accent:#f07eaa; --hero-muted:#b9bfd0;
+    --progress:#f07eaa; --progress-track:#3a4566;
+    --success:#1f7a4d;
+    --drink-water:#3f8f9b; --drink-coffee:#7a4a2e; --drink-tea:#a1771b;
+    --display:'Instrument Serif', Georgia, serif;
+    --sans:'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --r-md:14px; --r-lg:22px;
+    --shadow-pop:0 12px 32px rgba(31,42,68,.20);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#121828; --surface:#1f2a44; --border:#334063; --border-input:#8790aa;
+      --text:#f3ebc8; --text-muted:#c2c4cc;
+      --accent:#f07eaa; --on-accent:#121828; --accent-text:#f07eaa;
+      --accent-soft:#4a2338; --on-accent-soft:#fbc6da;
+      --success:#5fd39a;
+      --drink-water:#6cc3cf; --drink-coffee:#c99a7a; --drink-tea:#e0b34f;
+      --shadow-pop:0 12px 32px rgba(0,0,0,.45);
+    }
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg); color:var(--text); font:500 16px/1.6 var(--sans); -webkit-font-smoothing:antialiased}
+  a{color:var(--accent-text)}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 20px}
+  h1,h2{font-family:var(--display); font-weight:400; line-height:1.05; letter-spacing:-.01em}
+  h1 em,h2 em{font-style:italic; color:var(--accent-text)}
+  .hero h1 em,.closing h2 em{color:var(--hero-accent)}
+  h2{font-size:clamp(34px,5vw,48px); margin-bottom:24px}
+  section{padding:80px 0}
+  .muted{color:var(--text-muted)}
+
+  /* the label with the pink rule, as in the owner's Reels */
+  .tag{display:inline-block; font-family:var(--display); font-size:20px; padding-bottom:6px; margin-bottom:18px}
+  .tag::after{content:""; display:block; width:44px; height:3px; margin:8px auto 0; background:var(--accent); border-radius:2px}
+  .tag.left::after{margin-left:0}
+
+  .btn{display:inline-block; background:var(--accent); color:var(--on-accent); font:700 16px/1 var(--sans);
+       padding:18px 28px; border-radius:999px; border:0; cursor:pointer; text-decoration:none;
+       transition:transform .12s cubic-bezier(.2,.8,.2,1), box-shadow .12s}
+  .btn:hover{transform:translateY(-1px); box-shadow:var(--shadow-pop)}
+  .btn:focus-visible{outline:3px solid var(--on-hero); outline-offset:3px}
+
+  /* hero: the navy veil */
+  .hero{background:linear-gradient(180deg,#26324f 0%, var(--hero) 55%); color:var(--on-hero); padding:56px 0 72px; overflow:hidden}
+  .nav{display:flex; justify-content:space-between; align-items:center; margin-bottom:56px}
+  .logo{font-family:var(--display); font-size:30px; color:var(--on-hero); text-decoration:none}
+  .logo em{color:var(--hero-accent)}
+  .nav a.small{color:var(--hero-muted); font-weight:600; font-size:14px; text-decoration:none}
+  .hero-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:48px; align-items:center}
+  .hero .tag{color:var(--on-hero)}
+  .hero h1{font-size:clamp(52px,8vw,92px); margin-bottom:22px}
+  .hero p.lead{font-size:19px; color:var(--on-hero); max-width:30em; margin-bottom:30px}
+  .hero .fine{margin-top:14px; font-size:14px; color:var(--hero-muted)}
+
+  /* app preview, built from tokens; replace with a real screenshot after the build */
+  .phone{width:300px; margin:0 auto; background:#0d1322; border-radius:44px; padding:12px; box-shadow:0 30px 60px rgba(0,0,0,.35); position:relative}
+  .screen{background:#faf6ea; border-radius:34px; overflow:hidden; color:#1f2a44}
+  .veil{background:#1f2a44; color:#f3ebc8; padding:34px 22px 26px; text-align:center}
+  .veil .day{font-family:var(--display); font-size:17px}
+  .veil .day::after{content:""; display:block; width:30px; height:2px; background:#f07eaa; margin:6px auto 12px}
+  .veil .total{font-family:var(--display); font-size:44px; line-height:1}
+  .veil .total em{font-style:italic; color:#f07eaa}
+  .veil .of{font-size:13px; color:#b9bfd0; margin-top:4px}
+  .bar{height:10px; background:#3a4566; border-radius:999px; margin-top:16px; overflow:hidden}
+  .bar i{display:block; height:100%; width:52%; background:#f07eaa; border-radius:999px}
+  .logs{padding:16px 16px 8px}
+  .log{display:flex; align-items:center; gap:12px; padding:10px 12px; background:#f3ebc8; border-radius:14px; margin-bottom:8px; font-size:13px; font-weight:600}
+  .dot{width:28px; height:28px; border-radius:50%; flex:none}
+  .log span.t{margin-left:auto; color:#4c5570; font-weight:500}
+  .bebi{margin:6px 16px 20px; text-align:center; background:#f07eaa; color:#1f2a44; font-weight:700; border-radius:999px; padding:13px; font-size:15px}
+  .preview-note{display:block; text-align:center; font-size:12px; color:var(--hero-muted); margin-top:12px}
+
+  /* problem */
+  .problems{display:grid; grid-template-columns:repeat(3,1fr); gap:20px}
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:26px}
+  .card h3{font:700 18px/1.3 var(--sans); margin-bottom:8px}
+
+  /* steps */
+  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:28px; counter-reset:s}
+  .step{counter-increment:s}
+  .step::before{content:counter(s); display:flex; align-items:center; justify-content:center; width:46px; height:46px; border-radius:50%;
+                background:var(--accent-soft); color:var(--on-accent-soft); font:400 26px/1 var(--display); margin-bottom:14px}
+  .step h3{font:700 18px/1.3 var(--sans); margin-bottom:6px}
+
+  /* features */
+  .features{display:grid; grid-template-columns:repeat(3,1fr); gap:20px}
+  .feature{padding:24px; border-radius:var(--r-lg); border:1px solid var(--border)}
+  .feature h3{font-family:var(--display); font-weight:400; font-size:26px; line-height:1.1; margin-bottom:8px}
+  .parity{margin-top:22px}
+
+  /* pricing */
+  .plans{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; align-items:stretch}
+  .plan{background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:28px; display:flex; flex-direction:column}
+  .plan.best{border:2px solid var(--accent)}
+  .plan .who{font-size:14px; color:var(--text-muted); margin-bottom:12px}
+  .plan h3{font-family:var(--display); font-weight:400; font-size:30px}
+  .price{font-family:var(--display); font-size:44px; line-height:1; margin:14px 0 4px}
+  .price small{font:600 14px var(--sans); color:var(--text-muted)}
+  .plan ul{list-style:none; margin-top:16px; font-size:15px}
+  .plan li{padding:6px 0 6px 22px; position:relative}
+  .plan li::before{content:""; position:absolute; left:2px; top:14px; width:8px; height:8px; border-radius:50%; background:var(--accent)}
+  .badge{align-self:flex-start; background:var(--accent-soft); color:var(--on-accent-soft); font-size:12px; font-weight:700; padding:4px 10px; border-radius:999px; margin-bottom:10px}
+  .trial{margin-top:18px; font-size:14px}
+
+  /* faq */
+  details{border-bottom:1px solid var(--border); padding:18px 0}
+  summary{cursor:pointer; font-weight:700; font-size:17px; list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+"; float:right; font-family:var(--display); font-size:26px; line-height:1; color:var(--accent-text)}
+  details[open] summary::after{content:"–"}
+  details p{margin-top:10px; color:var(--text-muted)}
+
+  /* closing */
+  .closing{background:var(--hero); color:var(--on-hero); text-align:center}
+  .closing h2{font-size:clamp(40px,6vw,64px)}
+  .closing p{color:var(--hero-muted); margin-bottom:28px}
+  form{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; max-width:520px; margin:0 auto}
+  input[type=email]{flex:1 1 260px; padding:16px 20px; border-radius:999px; border:1px solid var(--hero-muted); background:transparent; color:var(--on-hero); font:500 16px var(--sans)}
+  input[type=email]::placeholder{color:var(--hero-muted)}
+  input[type=email]:focus-visible{outline:3px solid var(--hero-accent); outline-offset:2px}
+  .thanks{display:none; margin-top:16px; color:var(--on-hero)}
+  .hero form{justify-content:flex-start; margin:0}
+
+  footer{padding:32px 0; font-size:14px; color:var(--text-muted); text-align:center}
+  footer a{margin:0 8px}
+
+  @media (max-width:860px){
+    .hero-grid,.problems,.steps,.features,.plans{grid-template-columns:1fr}
+    .hero-grid{gap:44px}
+    section{padding:60px 0}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <nav class="nav">
+      <a class="logo" href="#">Hidra<em>Fit</em></a>
+      <a class="small" href="#precos">Preços</a>
+    </nav>
+    <div class="hero-grid">
+      <div>
+        <span class="tag left">Lembrete de beber, do jeito brasileiro</span>
+        <h1>Toda bebida <em>conta</em>.</h1>
+        <p class="lead">O cafezinho, o chá, o suco da tarde, a água de coco. O HidraFit soma tudo o que você bebe, te lembra na hora certa e não cobra pelo básico.</p>
+        <form class="waitlist" onsubmit="return joined(this)">
+          <input type="email" required placeholder="Seu melhor e-mail" aria-label="Seu e-mail">
+          <button class="btn" type="submit">Quero usar primeiro</button>
+        </form>
+        <p class="thanks" role="status">Pronto! Você está na lista. A gente avisa quando abrir.</p>
+        <p class="fine">Grátis. Sem anúncios. iPhone e Android.</p>
+      </div>
+      <div>
+        <div class="phone" aria-label="Prévia da tela inicial do HidraFit">
+          <div class="screen">
+            <div class="veil">
+              <div class="day">Hoje</div>
+              <div class="total">1.250 <em>ml</em></div>
+              <div class="of">de 2.400 ml · 52%</div>
+              <div class="bar"><i></i></div>
+            </div>
+            <div class="logs">
+              <div class="log"><span class="dot" style="background:#3f8f9b"></span>Água · 500 ml<span class="t">15:20</span></div>
+              <div class="log"><span class="dot" style="background:#a1771b"></span>Chá · 300 ml<span class="t">11:05</span></div>
+              <div class="log"><span class="dot" style="background:#7a4a2e"></span>Café · 150 ml<span class="t">08:10</span></div>
+              <div class="log"><span class="dot" style="background:#3f8f9b"></span>Água · 300 ml<span class="t">07:30</span></div>
+            </div>
+            <div class="bebi">Bebi</div>
+          </div>
+        </div>
+        <span class="preview-note">Prévia do design. O app está em construção.</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="wrap">
+      <span class="tag left">O problema</span>
+      <h2>Beber água não devia dar <em>trabalho</em>.</h2>
+      <div class="problems">
+        <div class="card"><h3>Só água é de graça</h3><p class="muted">Na maioria dos apps, registrar um café ou um chá é recurso pago. Mas o seu dia não é feito só de água.</p></div>
+        <div class="card"><h3>Lembrete que não te entende</h3><p class="muted">Ele toca dez minutos depois de você beber um copo, ou depois que você já foi dormir. Aí você desliga.</p></div>
+        <div class="card"><h3>A cobrança que aparece sem aviso</h3><p class="muted">Teste grátis, cobrança de um ano inteiro no cartão e nenhum jeito fácil de cancelar.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface)">
+    <div class="wrap">
+      <span class="tag left">Como funciona</span>
+      <h2>Três passos e <em>pronto</em>.</h2>
+      <div class="steps">
+        <div class="step"><h3>Conta pra gente sobre você</h3><p class="muted">Peso, rotina e a hora em que acorda e dorme. Em menos de um minuto você tem a sua meta.</p></div>
+        <div class="step"><h3>Bebeu? Toca em "Bebi"</h3><p class="muted">Um toque para o copo de sempre, ou escolha café, chá, suco, o que for.</p></div>
+        <div class="step"><h3>O lembrete se ajusta</h3><p class="muted">Ele zera toda vez que você registra e só toca enquanto você está acordado. Dá até para registrar pela notificação.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <span class="tag left">O que é diferente</span>
+      <h2>Feito para o seu <em>dia a dia</em>.</h2>
+      <div class="features">
+        <div class="feature"><h3>Toda bebida conta, de graça</h3><p class="muted">Água, café, chá, suco, leite, refri, água de coco e chimarrão no plano grátis.</p></div>
+        <div class="feature"><h3>Lembrete que te entende</h3><p class="muted">Zera quando você bebe e nunca toca de madrugada. Escolha qualquer intervalo.</p></div>
+        <div class="feature"><h3>Errou? Arruma.</h3><p class="muted">Edite o volume e a hora, apague, desfaça ou registre o copo de ontem.</p></div>
+        <div class="feature"><h3>Sem conta errada</h3><p class="muted">Bateu a meta, aparece 100%. Digite o volume exato ou escolha o tamanho da sua garrafa.</p></div>
+        <div class="feature"><h3>Sem anúncio, sem chatice</h3><p class="muted">Nenhum anúncio. Pedimos avaliação uma vez só, e só se você estiver curtindo.</p></div>
+        <div class="feature"><h3>Português do Brasil</h3><p class="muted">Suco, não "sumo". Chimarrão e água de coco no cardápio.</p></div>
+      </div>
+      <p class="parity muted">E o que você já espera: meta personalizada, histórico e modo escuro.</p>
+    </div>
+  </section>
+
+  <section id="precos" style="background:var(--surface)">
+    <div class="wrap">
+      <span class="tag left">Preços</span>
+      <h2>O básico é grátis. <em>Pra sempre</em>.</h2>
+      <div class="plans">
+        <div class="plan">
+          <p class="who">Para quem quer contar e ser lembrado</p>
+          <h3>Grátis</h3>
+          <p class="price">R$ 0</p>
+          <ul>
+            <li>Todas as bebidas comuns</li>
+            <li>Lembretes inteligentes, com som</li>
+            <li>Registrar pela notificação</li>
+            <li>Editar, apagar e dias anteriores</li>
+            <li>Histórico da semana e modo escuro</li>
+            <li>Sem anúncios</li>
+          </ul>
+        </div>
+        <div class="plan best">
+          <span class="badge">3,5 meses grátis no anual</span>
+          <p class="who">Para quem quer acompanhar tudo de perto</p>
+          <h3>Premium</h3>
+          <p class="price">R$ 49,90 <small>por ano</small></p>
+          <p class="muted" style="font-size:14px">ou R$ 5,90 por mês</p>
+          <ul>
+            <li>Tudo do Grátis</li>
+            <li>Bebidas personalizadas, com calorias, açúcar e cafeína</li>
+            <li>Histórico do mês e do ano, com estatísticas</li>
+            <li>Temas extras</li>
+          </ul>
+        </div>
+        <div class="plan">
+          <p class="who">Para quem não quer assinatura</p>
+          <h3>Para Sempre</h3>
+          <p class="price">R$ 89,90 <small>uma vez</small></p>
+          <ul>
+            <li>Tudo do Premium, para sempre</li>
+            <li>Inclui o que vier depois</li>
+            <li>Sem renovação, sem surpresa</li>
+          </ul>
+        </div>
+      </div>
+      <p class="trial muted">Teste de 7 dias só no plano anual, com aviso 2 dias antes de qualquer cobrança.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap" style="max-width:760px">
+      <span class="tag left">Perguntas</span>
+      <h2>Ficou alguma <em>dúvida</em>?</h2>
+      <details><summary>É grátis mesmo?</summary><p>Sim. Registrar qualquer bebida comum, os lembretes e o histórico da semana são grátis pra sempre, e sem anúncios.</p></details>
+      <details><summary>Por que tem plano "para sempre"?</summary><p>Porque muita gente não quer mais uma assinatura na vida. Pague uma vez e pronto.</p></details>
+      <details><summary>Como cancelo?</summary><p>Em Configurações → Assinatura, em dois toques. E a gente avisa 2 dias antes do teste acabar.</p></details>
+      <details><summary>Funciona no Android?</summary><p>Sim, iPhone e Android desde o lançamento.</p></details>
+      <details><summary>Funciona sem internet?</summary><p>Sim. Seus registros ficam no celular.</p></details>
+      <details><summary>Tem Apple Watch?</summary><p>Ainda não. Estamos focando em deixar o celular perfeito primeiro.</p></details>
+      <details><summary>Isso é orientação médica?</summary><p>Não. A meta é uma estimativa geral. Se você tem alguma condição de saúde, siga o que seu médico disser.</p></details>
+    </div>
+  </section>
+
+  <section class="closing">
+    <div class="wrap">
+      <span class="tag">HidraFit</span>
+      <h2>Bora <em>beber</em> direito?</h2>
+      <p>Entre na lista e seja uma das primeiras pessoas a usar o HidraFit.</p>
+      <form class="waitlist" onsubmit="return joined(this)">
+        <input type="email" required placeholder="Seu melhor e-mail" aria-label="Seu e-mail">
+        <button class="btn" type="submit">Quero usar primeiro</button>
+      </form>
+      <p class="thanks" role="status">Pronto! Você está na lista. A gente avisa quando abrir.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    © HidraFit · <a href="#">Privacidade</a> · <a href="#">Termos</a> · <a href="mailto:contato@hidrafit.com.br">contato@hidrafit.com.br</a>
+  </div>
+</footer>
+
+<script>
+  // Placeholder: nothing is saved yet. Connect the form to a waitlist service before publishing (see replica/launch/landing.md).
+  function joined(form){
+    form.style.display = 'none';
+    form.nextElementSibling.style.display = 'block';
+    return false;
+  }
+</script>
+</body>
+</html>
