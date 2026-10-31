@@ -135,11 +135,11 @@
   .closing{background:var(--hero); color:var(--on-hero); text-align:center}
   .closing h2{font-size:clamp(40px,6vw,64px)}
   .closing p{color:var(--hero-muted); margin-bottom:28px}
+  .soon{margin:0 0 14px}
   form{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; max-width:520px; margin:0 auto}
   input[type=email]{flex:1 1 260px; padding:16px 20px; border-radius:999px; border:1px solid var(--hero-muted); background:transparent; color:var(--on-hero); font:500 16px var(--sans)}
   input[type=email]::placeholder{color:var(--hero-muted)}
   input[type=email]:focus-visible{outline:3px solid var(--hero-accent); outline-offset:2px}
-  .thanks{display:none; margin-top:16px; color:var(--on-hero)}
   .hero form{justify-content:flex-start; margin:0}
 
   footer{padding:32px 0; font-size:14px; color:var(--text-muted); text-align:center}
@@ -165,11 +165,8 @@
         <span class="tag left">Lembrete de beber, do jeito brasileiro</span>
         <h1>Toda bebida <em>conta</em>.</h1>
         <p class="lead">O cafezinho, o chá, o suco da tarde, a água de coco. O HidraFit soma tudo o que você bebe, te lembra na hora certa e não cobra pelo básico.</p>
-        <form class="waitlist" onsubmit="return joined(this)">
-          <input type="email" required placeholder="Seu melhor e-mail" aria-label="Seu e-mail">
-          <button class="btn" type="submit">Quero usar primeiro</button>
-        </form>
-        <p class="thanks" role="status">Pronto! Você está na lista. A gente avisa quando abrir.</p>
+        <p class="soon"><strong>Em breve</strong> na App Store e no Google Play.</p>
+        <a class="btn" href="mailto:contato@hidrafit.com.br?subject=Quero%20saber%20quando%20o%20HidraFit%20lan%C3%A7ar">Me avise quando lançar</a>
         <p class="fine">Grátis. Sem anúncios. iPhone e Android.</p>
       </div>
       <div>
@@ -301,29 +298,17 @@
     <div class="wrap">
       <span class="tag">HidraFit</span>
       <h2>Bora <em>beber</em> direito?</h2>
-      <p>Entre na lista e seja uma das primeiras pessoas a usar o HidraFit.</p>
-      <form class="waitlist" onsubmit="return joined(this)">
-        <input type="email" required placeholder="Seu melhor e-mail" aria-label="Seu e-mail">
-        <button class="btn" type="submit">Quero usar primeiro</button>
-      </form>
-      <p class="thanks" role="status">Pronto! Você está na lista. A gente avisa quando abrir.</p>
+      <p>O HidraFit está chegando. Mande um e-mail e a gente avisa no dia do lançamento.</p>
+      <a class="btn" href="mailto:contato@hidrafit.com.br?subject=Quero%20saber%20quando%20o%20HidraFit%20lan%C3%A7ar">Me avise quando lançar</a>
     </div>
   </section>
 </main>
 
 <footer>
   <div class="wrap">
-    © HidraFit · <a href="#">Privacidade</a> · <a href="#">Termos</a> · <a href="mailto:contato@hidrafit.com.br">contato@hidrafit.com.br</a>
+    © HidraFit · <a href="privacidade/">Privacidade</a> · <a href="termos/">Termos</a> · <a href="mailto:contato@hidrafit.com.br">contato@hidrafit.com.br</a>
   </div>
 </footer>
 
-<script>
-  // Placeholder: nothing is saved yet. Connect the form to a waitlist service before publishing (see replica/launch/landing.md).
-  function joined(form){
-    form.style.display = 'none';
-    form.nextElementSibling.style.display = 'block';
-    return false;
-  }
-</script>
 </body>
 </html>
